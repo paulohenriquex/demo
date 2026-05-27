@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.ProdutoRequestDTO;
@@ -39,6 +39,7 @@ public class ProdutoService {
         Produto p = new Produto();
         p.setNome(dto.nome());
         p.setPreco(dto.preco());
+        p.setMedida(dto.medida());
 
         User usuario = userRepository.findById(dto.userId())
         .orElseThrow(()-> new EntityNotFoundException("Usuário não encontrado."));
@@ -57,12 +58,9 @@ public class ProdutoService {
 
     public List<ProdutoResponseDTO> listarTodos(){
         List<Produto> produtos = produtoRepository.findAll();
-        List<ProdutoResponseDTO> dtos= new ArrayList<>();
-
-        for(Produto p: produtos){   
-            dtos.add(converterEmDTO(p));
-        }
-        return dtos;
+        return produtos.stream()
+                .map(this::converterEmDTO)
+                .collect(Collectors.toList());
     }
 
     public ProdutoResponseDTO converterEmDTO(Produto p){
@@ -70,6 +68,7 @@ public class ProdutoService {
             p.getId(),
             p.getNome(),
             p.getPreco(),
+            p.getMedida(),
             p.getMarca().getId(),
             p.getCategoria().getId()
         );
