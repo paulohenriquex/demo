@@ -1,0 +1,27 @@
+services:
+  meu-banco:
+    image: postgres:17-alpine
+    container_name: database-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - volume-postgres:/var/lib/postgresql/data
+
+  minha-app-java:
+    build: .
+    container_name: api-spring-boot
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://meu-banco:5432/${POSTGRES_DB}
+      - DB_USERNAME=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - meu-banco
+
+volumes:
+  volume-postgres:
