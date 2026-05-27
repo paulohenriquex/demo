@@ -13,18 +13,20 @@ import com.example.demo.dto.ProdutoRequestDTO;
 import com.example.demo.dto.ProdutoResponseDTO;
 import com.example.demo.service.ProdutoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/produto")
 public class ProdutoController {
     
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
     public ProdutoController(ProdutoService produtoService){
         this.produtoService = produtoService;
     }
 
     @PostMapping("/cadastrar")
-    public ProdutoResponseDTO criar(@RequestBody ProdutoRequestDTO dto){
+    public ProdutoResponseDTO criar(@RequestBody @Valid ProdutoRequestDTO dto){
         return produtoService.criar(dto);
     }
 
