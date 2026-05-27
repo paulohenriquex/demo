@@ -46,10 +46,10 @@ public class FichaTecnicaService {
            Receita receita = receitaRepository.findById(dto.receitaId())
            .orElseThrow(() -> new EntityNotFoundException("Receita não encontrado."));
 
-           FichaTecnica ficha = new FichaTecnica();
-           ficha.setUser(usuario);
-           ficha.setReceita(receita);
-           ficha.setIngredientes(new ArrayList<>());
+           FichaTecnica fichaTecnica = new FichaTecnica();
+           fichaTecnica.setUser(usuario);
+           fichaTecnica.setReceita(receita);
+           fichaTecnica.setIngredientes(new ArrayList<>());
 
            for(IngredienteRequestDTO ingDTO: dto.ingredientes()){
                 Produto produto = produtoRepository.findById(ingDTO.produtoId())
@@ -59,12 +59,12 @@ public class FichaTecnicaService {
                     ingrediente.setProduto(produto);
                     ingrediente.setPercapita(ingDTO.percapita());
 
-                    ingrediente.setFichaTecnica(ficha);
+                    ingrediente.setFichaTecnica(fichaTecnica);
 
-                    ficha.getIngredientes().add(ingrediente);
+                    fichaTecnica.getIngredientes().add(ingrediente);
            }
 
-           FichaTecnica fichaSalva = fichaTecnicaRepository.save(ficha);
+           FichaTecnica fichaSalva = fichaTecnicaRepository.save(fichaTecnica);
 
            return converterEmDTO(fichaSalva);
         }
