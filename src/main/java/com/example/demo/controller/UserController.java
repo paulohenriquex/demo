@@ -12,6 +12,8 @@ import com.example.demo.dto.UserRequestDTO;
 import com.example.demo.dto.UserResponseDTO;
 import com.example.demo.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -23,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/cadastrar")
-    public UserResponseDTO criar(@RequestBody UserRequestDTO dto){
+    public UserResponseDTO criar(@RequestBody @Valid UserRequestDTO dto){
         System.out.println("Recebendo requisição para cadastrar usuário: " + dto.email());
         return userService.criar(dto);
     }
