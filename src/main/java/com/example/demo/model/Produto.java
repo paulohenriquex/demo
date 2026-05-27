@@ -22,6 +22,7 @@ public class Produto{
 
     private String nome;
     private BigDecimal preco;
+    private String medida;
     
     @ManyToOne
     @JoinColumn(name = "marca_id")
